@@ -65,7 +65,7 @@ function addToDom(task){
 		<label for="${task.id}">${task.text}</label>
 		<div>
 			<span><i class="fa-regular fa-trash-can" id="delete" data-id="${task.id}"></i></span>
-			<span><i class="fa-solid fa-star" id="impStar" data-id="${task.id}" ${task.important? 'checked':''}></i></span>
+			<span><i class="fa-${task.important?"solid":"regular"} fa-star" id="impStar" data-id="${task.id}" ${task.important? 'checked':''}></i></span>
 		</div>
 	`;
 	taskList.append(li);
@@ -126,7 +126,7 @@ function toggleStar(taskId){
 			return task.id==taskId;
 		});
 	if(imp.length==0){
-		imp.push(newtasks[0]);
+		imp.unshift(newtasks[0]);
 		const currentTask=newtasks[0];
 			currentTask.important=!currentTask.important;
 		showNotification("task added to Important list");
@@ -141,7 +141,7 @@ function toggleStar(taskId){
 			return;
 		}
 		else{
-			imp.push(newtasks[0]);
+			imp.unshift(newtasks[0]);
 			const currentTask=newtasks[0];
 			currentTask.important=!currentTask.important;
 			showNotification('task added to Important list');
@@ -150,7 +150,7 @@ function toggleStar(taskId){
 }
 function addTask(task){
 	if(task){
-		tasks.push(task);
+		tasks.unshift(task);
 		renderList();
 		showNotification("Task added successfully!");
 		return;
@@ -177,10 +177,10 @@ function handleClick(e){
 	if(target.id=='impStar'){
 		const taskId=target.dataset.id;
 		toggleStar(taskId);
+		target.classList.remove('fa-regular');
+		target.classList.add('fa-solid');
 		target.style.color="lightblue";
-		// target.classList.remove('fa-regular');
-		// target.classList.add('fa-solid');
-		return;
+		
 	}
 	if(target.className=='add-task'){
 		const taskId=target.id;
